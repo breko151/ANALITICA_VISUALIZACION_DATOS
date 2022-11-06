@@ -44,18 +44,43 @@ means <- function(data) {
   return(means_list)
 }
 
-covars <- function(data) {
+mult_mat <- function(mat1, mat2) {
+  row_no1 <- dim(mat1)[1]
+  row_no2 <- dim(mat2)[1]
+  col_no1 <- dim(mat1)[2]
+  col_no2 <- dim(mat2)[2]
+  if(col_no1 == row_no2) {
+    new_mat <- data.frame()
+    for(a in 1:col_no2) {
+      rown <- c()
+      for(i in 1:row_no1) {
+        suma <- 0
+        for(j in 1:col_no1) {
+          suma <- suma + (mat1[i,j] * mat2[j,a])
+        }
+        rown <- c(rown, suma)
+      }
+      if(dim(new_mat)[1] == 0) {
+        new_mat <- cbind(rown)
+      } else {
+        new_mat <- cbind(new_mat, rown)
+      }
+    }
+    return(new_mat)
+  }
+}
 
-  return(cov(data))
+covars <- function(data) {
+  cov_mat <- cov(data)
+  return(cov_mat)
 }
 
 mahalanobis_d <- function(vector1, vector2, covars_data) {
   dis_vect <- vector1 - vector2
   covars_data_inv <- solve(covars_data)
-  dis_vect_covars_inv <- dis_vect * covars_data_inv
+  dis_vect_covars_inv <- mult_mat(dis_vect, covars_data_inv)
   t_dis_vect <- t(dis_vect)
-  mahalanobis_dis <- dis_vect_covars_inv * t_dis_vect
-  mahalanobis_dis <- sum(mahalanobis_dis)
+  mahalanobis_dis <- mult_mat(dis_vect_covars_inv, t_dis_vect)
   return(mahalanobis_dis)
 }
 
