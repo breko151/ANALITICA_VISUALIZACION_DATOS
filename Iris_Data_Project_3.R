@@ -83,7 +83,7 @@ mahalanobis_dist <- function(data) {
   third_step <- mult_mat(second_step, t_data)
   four_step <- mult_mat(third_step, identity_one)
   mahalanobis_dists <- diag(four_step)
-  return(mahalanobis_dists)
+  return(mahalanobis_dists ** 0.5)
 }
 
 graficate <- function(data, name) {

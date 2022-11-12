@@ -81,7 +81,7 @@ mahalanobis_d <- function(vector1, vector2, covars_data) {
   dis_vect_covars_inv <- mult_mat(dis_vect, covars_data_inv)
   t_dis_vect <- t(dis_vect)
   mahalanobis_dis <- mult_mat(dis_vect_covars_inv, t_dis_vect)
-  return(mahalanobis_dis)
+  return(mahalanobis_dis ** 0.5)
 }
 
 main(path)
